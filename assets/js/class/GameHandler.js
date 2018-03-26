@@ -5,14 +5,12 @@ class GameHandler {
 
     this.canPlay = false;
 
+    this.render = options.render;
+    this.board = new Board(options.dimensions, this.render);
 
-    this.render = new Render(options, function() {
-      this.board = new Board(options.dimensions, this.render);
 
+    this.render.renderer.domElement.addEventListener("mouseup", this.onMouseClick.bind(this), false);
 
-      this.render.renderer.domElement.addEventListener("mouseup", this.onMouseClick.bind(this), false);
-
-    }.bind(this));
   }
 
   onMouseClick(event) {
@@ -37,7 +35,12 @@ class GameHandler {
       }, this.render)
   }
 
-  clearScene( scene ) {
+  endGame() {
+    this.clearScene(this.render.scene);
+  }
+
+  // https://www.reddit.com/r/threejs/comments/5srlz6/properly_destroy_threejs_instance_object/
+  clearScene(scene) {
     for (var i = scene.children.length - 1; i >= 0; i--) {
       var object = scene.children[i];
       if (object.type === 'Mesh') {

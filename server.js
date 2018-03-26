@@ -20,7 +20,7 @@ io.on('connection', function (socket) {
 
 
 
-	socket.on('mm-search', function (x) {
+	socket.on('mm-search', function () {
 
 		var gameFound = false;
 

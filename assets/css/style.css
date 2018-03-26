@@ -12,3 +12,69 @@ body {
   height: 100%;
   background: #e6e0cf;
 }
+
+[class^="modal"] {
+  display: none;
+  position: absolute;
+  width: 50vw;
+  left: 25vw;
+  height: 20vh;
+  top: 40vh;
+  animation-duration: 2s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+    
+  background-color:  white;
+  box-shadow: 0 0 7px 4px black;
+  border-radius: 20px;
+}
+
+.modal-size-large {
+  height: 50vh;
+  top: 25vh;
+}
+
+
+body.searching .modal-loading {
+  display: block;
+
+}
+
+body.yourTurn .modal-yourturn {
+  display: block;
+  animation-name: fade;
+
+}
+
+body.yourturn .modal-yourturn {
+  display: block;
+  /* animation: fade, rotate; */
+  animation-name:  fade;
+}
+
+body.win .modal-win{
+  display: block;
+}
+
+body.lose .modal-lose {
+  display: block;
+}
+
+@keyframes fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes rotate {
+  from {
+   transform: rotate(0deg);
+  }
+  to {
+   transform: rotate(360deg);
+  }
+}

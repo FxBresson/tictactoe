@@ -3,6 +3,8 @@ class Game {
 
         this.io = io;
 
+        this.currentPlayer = null;
+
         this.players = []
         this.players[Math.round(Math.random())] = options.player1;
 
@@ -26,8 +28,8 @@ class Game {
     }
 
     startGame() {
-        this.io.to(this.id).emit('mm-gameFound', {gameID: this.id, dimensions: [this.board.nbColumns, this.board.nbRows]});
-        this.currentUser = Math.round(Math.random());
+        this.io.to(this.id).emit('mm-gameFound', {gameId: this.id, dimensions: [this.board.nbColumns, this.board.nbRows]});
+        this.currentPlayer = Math.round(Math.random());
         this.io.to(this.id).emit('g-startTurn', this.players[this.currentPlayer])
     }
 
@@ -114,7 +116,6 @@ class Game {
     }
 
     endGame() {
-        alert(this.currentPlayer + ' wins !');
         this.io.to(this.id).emit('g-end', this.players[this.currentPlayer]);
     }
 
