@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Home</title>
+</head>
+
+<body>
+
+    <button class="btn-findGame">Find a game</button>
+
+    <div id="boardContainer"></div> 
+
+    <!-- jQuey -->
+    <script src="js/lib/jquery-3.3.1.min.js"></script>
+    <!-- Three.js -->
+    <script src="js/lib/three.min.js"></script>
+    <script src="js/lib/three.js-master/examples/js/controls/OrbitControls.js"></script>
+    <script src="js/lib/three.js-master/examples/js/renderers/Projector.js"></script>
+    <!-- Game Classes -->
+    <script src="js/class/Board.js"></script>
+    <script src="js/class/Pawn.js"></script>
+    <script src="js/class/Render.js"></script>
+    <script src="js/class/GameHandler.js"></script>
+    <!-- Socket.io -->
+    <script src="js/lib/socket.io.js"></script>
+    <!-- Main -->
+    <script>
+        var socket = io();
+
+        
+        $('.btn-findGame').click(function() {
+            socket.emit('mm-search');
+        })
+
+        socket.on('mm-gameFound', function(options) {
+            var gameHandler = new GameHandler({
+                id: options.gameId,
+                // The DOM element in which the drawing will happen.
+                containerEl: document.getElementById('boardContainer'),
+                // The base URL from where the BoardController will load its data.
+                assetsUrl: '3d/',
+
+                //Size of the board
+                dimensions: options.dimensions
+            });
+            socket.on('g-placePawn', function(opt) {
+                gameHandler.placePawn(opt.cell, opt.owner);
+            })
+            socket.on('g-startTurn', function(player) {
+                gameHandler.canPlay = false;
+                console.log(player, socket.id)
+                if (player == socket.id) {
+                    console.log('my turn');
+                    gameHandler.canPlay = true;
+                }
+            })
+            socket.on('g-end', function(player) {
+                gameHandler.canPlay = false;
+                console.log(player, socket.id)
+                if (player == socket.id) {
+                    console.log('You win');
+                } else {
+                    console.log('you lose');
+                }
+            })
+        })
+
+       
+
+    </script>
+</body>
+
+</html>
