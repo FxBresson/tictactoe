@@ -12,11 +12,12 @@
 </head>
 
 <body>
-
-    <button class="btn-findGame">Find a game</button>
-
     <div id="boardContainer"></div> 
 
+    <div class="ui-menu">
+        <h1>TIC TAC TOE</h1>
+        <button class="btn-findGame">Find a game</button>
+    </div>
 
     <div class="modal-loading modal-size-large">
         Searching for a game
@@ -26,14 +27,19 @@
         Your turn
     </div>
 
+    <div class="modal-tie">
+        It's a tie
+        <button class="btn-restart">Restart</button>
+    </div>
+
     <div class="modal-win">
         You win
-        <button class="btn-restart"></button>
+        <button class="btn-restart">Restart</button>
     </div>
 
     <div class="modal-lose">
         You lose !
-        <button class="btn-restart"></button>
+        <button class="btn-restart">Restart</button>
     </div>
 
 
@@ -56,7 +62,7 @@
     <script>
         var socket = io();
 
-        var gameHandler = null;
+        gameHandler = null;
 
         var render = new Render({
             // The DOM element in which the drawing will happen.
@@ -72,10 +78,12 @@
             })
 
             $('.btn-restart').click(function() {
-                state('default')
+                gameHandler.endGame();
+                state('searching');
+                socket.emit('mm-search');
             })
 
-            state('default')
+            state('menu')
 
             socket.on('mm-gameFound', function(options) {
                 state('inGame');
@@ -97,28 +105,24 @@
                         gameHandler.canPlay = false;
                     }
                 })
-                socket.on('g-end', function(player) {
+                socket.on('g-end', function(winner) {
                     gameHandler.canPlay = false;
-                    console.log(player, socket.id)
-                    if (player == socket.id) {
+                    if (!winner) {
+                        state('end tie')
+                    } else if (winner == socket.id) {
                         state('end win')
                         console.log('You win');
                     } else {
                         state('end lose')
                         console.log('you lose');
                     }
-                    gameHandler.endGame();
                 })
             })
-
         })
 
         function state(state) {
             $('body').removeClass().addClass(state)
         }
-
-       
-
     </script>
 </body>
 

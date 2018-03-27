@@ -36,9 +36,14 @@ class Game {
     play(cell) {
         this.board.pawns[cell[0]][cell[1]] = this.currentPlayer
         if (!this.verif(cell)) {
-            this.switchUser();
+            if (this.board.pawns.join().indexOf(',,') == -1) {
+                //BoardFull
+                this.endGame(false)
+            } else {
+                this.switchUser();
+            }
         } else {
-            this.endGame();
+            this.endGame(this.players[this.currentPlayer]);
         }
     }
 
@@ -115,12 +120,12 @@ class Game {
         this.io.to(this.id).emit('g-startTurn', this.players[this.currentPlayer]);
     }
 
-    endGame() {
-        this.io.to(this.id).emit('g-end', this.players[this.currentPlayer]);
+    endGame(winner) {
+        this.io.to(this.id).emit('g-end', winner);
     }
 
     isOpened() {
-        return this.players.length == 1 || this.players[0] == 'undefined';
+        return this.players.length == 1 || this.players[0] == undefined;
     }
 }
 

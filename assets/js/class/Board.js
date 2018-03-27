@@ -61,7 +61,4 @@ class Board {
     
         return new THREE.Vector3(x, 0, z);
     }
-    
-    
-
 }

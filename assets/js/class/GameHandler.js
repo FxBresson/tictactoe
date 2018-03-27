@@ -43,9 +43,12 @@ class GameHandler {
   clearScene(scene) {
     for (var i = scene.children.length - 1; i >= 0; i--) {
       var object = scene.children[i];
-      if (object.type === 'Mesh') {
+      if (object.type === 'Mesh' ) {
         object.geometry.dispose();
         object.material.dispose();
+        scene.remove(object);
+      } else if (object.type === 'Object3D') {
+        this.clearScene(object)
         scene.remove(object);
       }
     }
