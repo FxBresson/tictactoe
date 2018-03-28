@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,7 @@
 
     <link rel="stylesheet" href="css/style.css">
 
-    <title>Home</title>
+    <title>Tic Tac Toe</title>
 </head>
 
 <body>
@@ -43,8 +42,6 @@
     </div>
 
 
-
-
     <!-- jQuey -->
     <script src="js/lib/jquery-3.3.1.min.js"></script>
     <!-- Three.js -->
@@ -59,71 +56,7 @@
     <!-- Socket.io -->
     <script src="js/lib/socket.io.js"></script>
     <!-- Main -->
-    <script>
-        var socket = io();
-
-        gameHandler = null;
-
-        var render = new Render({
-            // The DOM element in which the drawing will happen.
-            containerEl: document.getElementById('boardContainer'),
-            // The base URL from where the BoardController will load its data.
-            assetsUrl: '3d/',
-        }, function() {
-
-            
-            $('.btn-findGame').click(function() {
-                state('searching');
-                socket.emit('mm-search');
-            })
-
-            $('.btn-restart').click(function() {
-                gameHandler.endGame();
-                state('searching');
-                socket.emit('mm-search');
-            })
-
-            state('menu')
-
-            socket.on('mm-gameFound', function(options) {
-                state('inGame');
-                gameHandler = new GameHandler({
-                    id: options.gameId,
-                    render: render,
-                    //Size of the board
-                    dimensions: options.dimensions
-                });
-                socket.on('g-placePawn', function(opt) {
-                    gameHandler.placePawn(opt.cell, opt.owner);
-                })
-                socket.on('g-startTurn', function(player) {
-                    if (player == socket.id) {
-                        state('yourturn');
-                        gameHandler.canPlay = true;
-                    } else {
-                        state('opponentturn');
-                        gameHandler.canPlay = false;
-                    }
-                })
-                socket.on('g-end', function(winner) {
-                    gameHandler.canPlay = false;
-                    if (!winner) {
-                        state('end tie')
-                    } else if (winner == socket.id) {
-                        state('end win')
-                        console.log('You win');
-                    } else {
-                        state('end lose')
-                        console.log('you lose');
-                    }
-                })
-            })
-        })
-
-        function state(state) {
-            $('body').removeClass().addClass(state)
-        }
-    </script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
