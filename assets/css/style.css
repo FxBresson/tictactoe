@@ -73,9 +73,11 @@ body.menu .ui-menu {
 
 @keyframes fade {
     from {
+        visibility: visible;
         opacity: 1;
     }
     to {
+        visibility: hidden;
         opacity: 0;
     }
 }

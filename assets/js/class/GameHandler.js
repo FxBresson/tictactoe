@@ -13,7 +13,7 @@ class GameHandler {
         //Create a new board
         this.board = new Board(options.board, this.render);
         //Add Event Listner
-        this.render.renderer.domElement.addEventListener("mouseup", this.onMouseClick.bind(this), false);
+        this.render.renderer.domElement.addEventListener("click", this.onMouseClick.bind(this), false);
     }
 
     /**

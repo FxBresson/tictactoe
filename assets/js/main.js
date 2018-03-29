@@ -42,7 +42,7 @@ var render = new Render({
 		//When the game ends
 		socket.on('g-end', function (winner) {
 			gameHandler.canPlay = false;
-			if (!winner) { //Tie
+			if (winner === false) { //Tie
 				state('end tie')
 			} else if (winner == socket.id) { //Win
 				state('end win')
