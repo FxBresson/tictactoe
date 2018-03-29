@@ -1,0 +1,17 @@
+{
+  "name": "tictactoe",
+  "version": "1.0.0",
+  "description": "This project was made using node.js and socket.io on the server side, and javascript/jquery for the client. Graphics are rendered using Three.js",
+  "main": "nodeloop.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
