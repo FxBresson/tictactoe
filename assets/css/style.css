@@ -1,13 +1,55 @@
-html,
-body {
-    height: 100%;
-    overflow: hidden;
-}
+/* 
+color: #DF740C;
+color: #FFE64D;
+color: #E6FFFF;
+color: #6FC3DF;
+color: #0C141F;
+ */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+*:focus {
+    outline: none;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-size: 1.33vmax;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #6FC3DF;
+    text-align: center;
+}
+
+button {
+    width: 10em;
+    border: 0.25em #E6FFFF solid;
+    border-radius: 1em;
+    height: 2.5em;
+    line-height: 2em;
+    font-size: 1em;
+    color: #6FC3DF;
+    background-color: black;
+    text-transform: uppercase;
+    
+}
+
+button:hover {
+    cursor: pointer;
+    box-shadow: 0 0 18px 0px #6FC3DF;
+}
+
+button:active {
+    border-color: #FFE64D;
+    box-shadow: 0 0 18px 0px #DF740C;
+    color: #DF740C;
 }
 
 #boardContainer {
@@ -19,13 +61,23 @@ body {
     z-index: 1;
 }
 
+h1 {
+    margin-bottom: 5vh;
+}
+
 .ui-menu {
     position: absolute;
     z-index: 10;
     height: 50vh;
+    line-height: 15vh;
     top: 25vh;
     width: 50vw;
     left: 25vw;
+    display: none;
+    padding: 2em;
+    background-color: #0C141F;
+    border: 0.25em #E6FFFF solid;
+    box-shadow: 0 0 75px -6px #6FC3DF;
 }
 
 [class^="modal"] {
@@ -34,20 +86,25 @@ body {
     width: 50vw;
     left: 25vw;
     height: 20vh;
+    line-height: 7vh;
     top: 40vh;
     animation-duration: 2s;
     animation-timing-function: ease-in;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
-    background-color: white;
+    background-color: #0C141F;
     box-shadow: 0 0 7px 4px black;
     border-radius: 20px;
     z-index: 10;
+    padding: 1em;
+    border: 0.25em #E6FFFF solid;
+    box-shadow: 0 0 18px 0px #6FC3DF;
 }
 
 .modal-size-large {
     height: 50vh;
     top: 25vh;
+    line-height: 20vh;
 }
 
 body.searching .modal-loading,
@@ -62,13 +119,23 @@ body.yourturn .modal-yourturn {
     animation-name: fade;
 }
 
-.ui-menu {
-    display: none;
-    /* position:  absolute; */
-}
-
 body.menu .ui-menu {
     display: block;
+}
+
+.loader {
+    border: 1em solid black; /* Light grey */
+    border-top: 1em solid #6FC3DF; /* Blue */
+    border-radius: 50%;
+    width: 6em;
+    height: 6em;
+    animation: spin 2s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @keyframes fade {
