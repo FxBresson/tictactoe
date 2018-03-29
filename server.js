@@ -7,6 +7,10 @@ function generateGameId() {
     return (Math.random() + 1).toString(36).slice(2, 18);
 }
 
+function destroyGame(id) {
+    delete gameCollection[id];
+}
+
 /* ========== Variables ========== */
 // Server
 const express = require('express');
@@ -36,7 +40,7 @@ io.on('connection', function (socket) {
 
         //Try to find a game for {socket}
         for (let id in gameCollection) {
-            let game = gameCollection[id]
+            let game = gameCollection[id];
             if (game.isOpened()) {
                 //Join existing game
                 gameFound = true;
@@ -71,6 +75,32 @@ io.on('connection', function (socket) {
         //Event - tell the the sockets to place the pawn of the board
         io.to(game.id).emit('g-placePawn', opt);
     })
+
+    socket.on('disconnect', function() {
+        delete players[socket.id];
+        for (let gameId in gameCollection) {
+            let game = gameCollection[gameId]
+            let indexOf = game.players.indexOf(socket.id)
+            if (indexOf > -1) {
+                game.players.splice(indexOf, 1);
+                socket.leave(game.id)
+                let winner = indexOf == 0 ? 1 : 0;
+                game.endGame(game.players[winner]);
+            }
+        }
+    })
+
+    socket.on('g-leave', function(gameId){
+        socket.leave(gameId);
+        let game = gameCollection[gameId];
+        let indexOf = game.players.indexOf(socket.id)
+        game.players.splice(indexOf, 1);
+        socket.leave(gameId)
+        if (game.players.length == 0) { //game is finished, all players have left
+            delete gameCollection[gameId];
+        }
+    })
+
 });
 
 /* ========== Launch Server ========== */

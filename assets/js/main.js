@@ -15,6 +15,7 @@ var render = new Render({
 	})
 	//At the end of a game, reset the scne
 	$('.btn-restart').click(function () {
+		socket.emit('g-leave', gameHandler.id);
 		gameHandler.endGame();
 		state('searching');
 		socket.emit('mm-search');

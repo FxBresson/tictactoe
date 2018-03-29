@@ -10,6 +10,8 @@ class Game {
         this.id = options.gameId;
         this.currentPlayer = null;
 
+        this.finished = false;
+
         //array that contains the players
         this.players = []
         //assign a random player number (1 or 2) number to the player
@@ -145,6 +147,7 @@ class Game {
      * @param {int} winner The socket id of the winner
      */
     endGame(winner) {
+        this.finished = true;
         this.io.to(this.id).emit('g-end', winner);
     }
     /**
@@ -152,7 +155,7 @@ class Game {
      * @return {bool} true if game is opened, false if else
      */
     isOpened() {
-        return this.players.length == 1 || this.players[0] == undefined;
+        return !this.finished && (this.players.length == 1 || this.players[0] == undefined);
     }
 }
 
